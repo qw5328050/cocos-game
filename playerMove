@@ -1,0 +1,110 @@
+
+import { _decorator, Component, systemEvent, SystemEvent, EventKeyboard, KeyCode, Vec3, Node  } from 'cc';
+const { ccclass, property } = _decorator;
+
+/**
+ * Predefined variables
+ * Name = Move
+ * DateTime = Thu Dec 30 2021 10:31:26 GMT+0800 (中国标准时间)
+ * Author = qw5328050
+ * FileBasename = move.ts
+ * FileBasenameNoExtension = move
+ * URL = db://assets/player/move.ts
+ * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
+ *
+ */
+ 
+@ccclass('playerMove')
+export class playerMove extends Component {
+    // [1]
+    // dummy = '';
+
+    // [2]
+    // @property
+    // serializableDummy = 0;
+    public v = new Vec3();
+    public _targetPos = new Vec3();
+    private speed = 0.5
+    properties: {
+        name: 1
+    }
+    // 组件脚本的初始化阶段
+    onLoad () {
+        systemEvent.on(SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        systemEvent.on(SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+    }
+    // 当组件的 enabled 属性从 false 变为 true 时，或者所在节点的 active 属性从 false 变为 true 时，会激活 onEnable 回调
+    onEnable () {}
+    // 在组件第一次激活前
+    start () {
+        console.log(this.node)
+        systemEvent.on(SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        systemEvent.on(SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        // this.node.on(SystemEvent.EventType.KEY_DOWN, this.onKeyDown)
+        // this.node.on(SystemEvent.EventType.KEY_UP, this.onKeyUp)
+    }
+    // 在每一帧渲染前更新物体的行为，状态和方位
+    update (deltaTime: number) {
+        
+    }
+    // update 会在所有动画更新前执行
+    lateUpdate () {}
+    // 当组件的 enabled 属性从 true 变为 false 时，或者所在节点的 active 属性从 true 变为 false 时，会激活 onDisable 回调
+    onDisable () {
+        systemEvent.off(SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        systemEvent.off(SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+    }
+    // 当组件或者所在节点调用了 destroy()，则会调用 onDestroy 回调，并在当帧结束时统一回收组件
+    onDestroy () {}
+    onKeyDown (event: EventKeyboard) {
+        let pos = this.node.getPosition()
+        if (event.keyCode == KeyCode.KEY_W) {
+            pos.z -= this.speed
+            this.node.setPosition(pos)
+        }
+        if (event.keyCode == KeyCode.KEY_A) {
+            pos.x -= this.speed
+            this.node.setPosition(pos)
+        }
+        if (event.keyCode == KeyCode.KEY_S) {
+            pos.z += this.speed
+            this.node.setPosition(pos)
+        }
+        if (event.keyCode == KeyCode.KEY_D) {
+            pos.x += this.speed
+            this.node.setPosition(pos)
+        }
+        // switch(event.keyCode) {
+        //     case KeyCode.KEY_W:
+        //         pos.x += this.speed
+        //         this.node.setPosition(pos)
+        //         break;
+        //     case KeyCode.KEY_A:
+        //         pos.z -= this.speed
+        //         this.node.setPosition(pos)
+        //         break;
+        //     case KeyCode.KEY_S:
+        //         pos.x -= this.speed
+        //         this.node.setPosition(pos)
+        //         break;
+        //     case KeyCode.KEY_D:
+        //         pos.z += this.speed
+        //         this.node.setPosition(pos)
+        //         break;
+        // }
+    }
+    onKeyUp (event: EventKeyboard) {
+        // console.log(event.keyCode)
+    }
+}
+
+/**
+ * [1] Class member could be defined like this.
+ * [2] Use `property` decorator if your want the member to be serializable.
+ * [3] Your initialization goes here.
+ * [4] Your update function goes here.
+ *
+ * Learn more about scripting: https://docs.cocos.com/creator/3.3/manual/en/scripting/
+ * Learn more about CCClass: https://docs.cocos.com/creator/3.3/manual/en/scripting/ccclass.html
+ * Learn more about life-cycle callbacks: https://docs.cocos.com/creator/3.3/manual/en/scripting/life-cycle-callbacks.html
+ */
